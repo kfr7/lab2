@@ -10,12 +10,12 @@ By the end of the lab, all tests in the report should be passing.
 */
 
 const studentInformation = {
-  name: "FILL_IN_YOUR_NAME_HERE",
-  grade: "FILL_IN_YOUR_GRADE_HERE",
-  advisor: "FILL_IN_YOUR_ADVISOR_HERE",
-  major: "FILL_IN_YOUR_MAJOR_HERE",
-  graduationYear: "FILL_IN_YOUR_GRADUATION_YEAR_HERE",
-  imageUrl: "ADD_A_URL_TO_ANY_IMAGE_HERE",
+  name: "Kian Ranjbar",
+  grade: "Junior",
+  advisor: "Not Available",
+  major: "Computer Science",
+  graduationYear: "2024",
+  imageUrl: "https://wallpaperaccess.com/full/1428481.jpg",
 }
 
 let semester = "Spring Semester"
@@ -60,6 +60,22 @@ const gpaPointsLookup = {
  */
 const dropdownEl = document.querySelector(".dropdown")
 // ADD more query selectors here
+let studentNameSpan = document.querySelector("#student-name");
+let studentAdvisorSpan = document.querySelector("#student-advisor");
+let studentMajorSpan = document.querySelector("#student-major");
+let studentGradeLevelSpan = document.querySelector("#student-grade-level");
+let studentGraduationYearSpan = document.querySelector("#student-graduation-year");
+let studentImageImg = document.querySelector("#student-image");
+let semesterDropdownDiv = document.querySelector(".semester-dropdown");
+let semesterDropdownH2 = document.querySelector(".dropdown-button");
+let semesterDropdownSpan = document.querySelector(".dropdown-label");
+let fallSemesterSpan = document.querySelector("#fall-semester");
+let springSemesterSpan = document.querySelector("#spring-semester");
+let winterTermSpan = document.querySelector("#winter-term");
+let reportCardTableDiv = document.querySelector("#report-card-table");
+// Supposed to use var and maybe const for some of the variables
+// STILL NEED TO ADD MORE, COME BACK TO SEE WHICH ONES I NEED
+
 
 /**
  * SOLUTIONS FOR STUDENT INFO DOM UPDATES
@@ -71,7 +87,7 @@ const dropdownEl = document.querySelector(".dropdown")
  * @param {String} studentName - the name of the student
  */
 function updateStudentName(studentName) {
-  // code goes here
+  studentNameSpan.innerHTML = studentName;
 }
 
 /**
@@ -80,7 +96,7 @@ function updateStudentName(studentName) {
  * @param {String|Number} studentGradeLevel - the grade level of the student
  */
 function updateStudentGradeLevel(studentGradeLevel) {
-  // code goes here
+  studentGradeLevelSpan.innerHTML = studentGradeLevel;
 }
 
 /**
@@ -89,7 +105,7 @@ function updateStudentGradeLevel(studentGradeLevel) {
  * @param {String} studentAdvisor - the advisor of the student
  */
 function updateStudentAdvisor(studentAdvisor) {
-  // code goes here
+  studentAdvisorSpan.innerHTML = studentAdvisor;
 }
 
 /**
@@ -98,7 +114,7 @@ function updateStudentAdvisor(studentAdvisor) {
  * @param {String} studentMajor - the major of the student
  */
 function updateMajor(studentMajor) {
-  // code goes here
+  studentMajorSpan.innerHTML = studentMajor;
 }
 
 /**
@@ -107,7 +123,7 @@ function updateMajor(studentMajor) {
  * @param {Number} graduationyear - the year the student graduates
  */
 function updateStudentGraduationYear(graduationYear) {
-  // code goes here
+  studentGraduationYearSpan.innerHTML = graduationYear;
 }
 
 /**
@@ -117,7 +133,8 @@ function updateStudentGraduationYear(graduationYear) {
  * @param {String} url - a link to an image
  */
 function updateStudentImage(imageUrl) {
-  // code goes here
+  studentImageImg.setAttribute('src', imageUrl);
+  // maybe can also try line below if above doesn't work...
 }
 
 /**
@@ -141,7 +158,16 @@ function populateStudentInfo(studentInformationObject) {
  */
 function addReportCardHeaders(reportCardTableElement) {
   // update the code here
-  reportCardTableElement.innerHTML += ``
+  reportCardTableElement.innerHTML += `
+  <div class="table-row table-header">
+    <h4 class="code-col">Code</h4>
+    <h4 class="name-col">Name</h4>
+    <h4 class="sem-col">Semester</h4>
+    <h4 class="cred-col">Credits</h4>
+    <h4 class="lett-col">Letter</h4>
+    <h4 class="pts-col">Points</h4>
+  </div>
+`
 }
 
 /**
@@ -153,9 +179,15 @@ function addReportCardHeaders(reportCardTableElement) {
  */
 function addCourseRowToReportCard(reportCardTableElement, course, rowNum) {
   // update the code here with information about the course passed to this function
+
   reportCardTableElement.innerHTML += `
   <div class="table-row course-row row-${rowNum + 1} ${rowNum % 2 === 1 ? "odd" : "even"}">
-
+    <h4 class="code-col">${course.code}</h4>
+    <h4 class="name-col">${course.name}</h4>
+    <h4 class="sem-col">${course.semester}</h4>
+    <h4 class="cred-col"><span class="credit">${course.credits}</span> credits</h4>
+    <h4 class="lett-col">${course.grade}</h4>
+    <h4 id="gpa-${rowNum+1}" class="pts-col">${gpaPointsLookup[course.grade]}</h4>
   </div>
   `
 }
@@ -164,14 +196,35 @@ function addCourseRowToReportCard(reportCardTableElement, course, rowNum) {
  * This function should add HTML for the totals row in the report card.
  */
 function addTotalsRow(reportCardTableElement) {
-  reportCardTableElement.innerHTML += ``
+  // Compute Total credits using "cred-col"?
+  // Compute Total points using "pts-col"?
+
+  reportCardTableElement.innerHTML += `
+  <div class="table-row totals even">
+    <h4 class="code-col"></h4>
+    <h4 class="name-col"></h4>
+    <h4 class="sem-col">Totals:</h4>
+    <h4 id="total-credits" class="cred-col"> ${addUpStudentCredits(reportCardTableElement)} credits </h4>
+    <h4 class="lett-col"></h4>
+    <h4 id="total-pts" class="pts-col">${addUpStudentPoints(reportCardTableElement)}</h4>
+  </div>    
+`
 }
 
 /**
  * This function should add HTML for the final row in the report card.
  */
 function addGpaRow(reportCardTableElement) {
-  reportCardTableElement.innerHTML += ``
+  reportCardTableElement.innerHTML += `
+  <div class="table-row gpa odd">
+    <h4 class="code-col"></h4>
+    <h4 class="name-col"></h4>
+    <h4 class="sem-col">GPA:</h4>
+    <h4 class="cred-col"></h4>
+    <h4 class="lett-col"></h4>
+    <h4 id="gpa" class="pts-col"> tbd</h4>               
+  </div>   
+  `
 }
 
 /**
@@ -187,6 +240,16 @@ function updateReportCard(reportCardTableElement, currentSemester) {
   if (reportCardTableElement) reportCardTableElement.innerHTML = ``
 
   // add your code here
+  // now add the adders
+  addReportCardHeaders(reportCardTableElement);
+  // now add the rows
+  const listOfSemester = studentData[currentSemester]
+  listOfSemester.forEach((course, i) => addCourseRowToReportCard(reportCardTableElement, course, i))
+
+  // call 2 functions 
+  addTotalsRow(reportCardTableElement);
+  addGpaRow(reportCardTableElement);
+
 }
 
 /**
@@ -205,6 +268,8 @@ function closeDropdown(dropdownElement) {
 
 function openDropdown(dropdownElement) {
   // code goes here
+  dropdownElement.classList.remove("closed")
+  console.log(dropdownElement.classList)
 }
 
 /**
@@ -230,7 +295,10 @@ function addEventListeners(
   winterTermElement
 ) {
   // Add an event listener for the dropdown button that calls the openDropdown function with the correct DOM element
+  console.log("checking listener")
+  dropdownElement.addEventListener('mouseover', openDropdown);
   // Add 3 event listeners - one for the fall semester option, the spring semester option, and the winter term option
+
   // Each callback function one should update the `semester` variable,
   // call the `updateReportCard` function, and close the dropdown
 }
@@ -249,7 +317,10 @@ function addEventListeners(
  *
  */
 function addUpStudentCredits(reportCardTableElement) {
-  // code goes here
+  let total = 0
+  let listOfCredits = reportCardTableElement.querySelectorAll(".credit");
+  listOfCredits.forEach(item => {total += parseInt(item.innerHTML)});
+  return total 
 }
 
 /**
@@ -265,10 +336,36 @@ function addUpStudentCredits(reportCardTableElement) {
  *
  */
 
+function addUpStudentPoints(reportCardTableElement) {
+  // let total = 0;
+  // let listOfLetters = reportCardTableElement.querySelectorAll(".pts-col");
+  // console.log(listOfLetters)
+  // listOfLetters.forEach(item => {total += parseInt(item.innerHTML)});
+  // return total;
+  let total = 0
+  let listOfCredits = reportCardTableElement.querySelectorAll(".pts-col");
+  for (const item in listOfCredits) {
+    if (typeof item == 'number')
+    {
+      console.log(typeof item, item)
+      total += parseInt(item)
+    }
+    else 
+    {
+      console.log(typeof item, item)
+    }
+  }
+  // listOfCredits.forEach(item => {total += parseInt(item.innerHTML)});
+  return total 
+}
+
 function calculateSemesterGpa(reportCardTableElement) {
   // code goes here
 }
 
 window.onload = function () {
   // execute your functions here to make sure they run as soon as the page loads
+  populateStudentInfo(studentInformation);
+  updateReportCard(reportCardTableDiv, semester);
+  addEventListeners(semesterDropdownDiv, semesterDropdownH2, reportCardTableDiv, fallSemesterSpan, springSemesterSpan, winterSemesterSpan)
 }

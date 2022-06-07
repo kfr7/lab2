@@ -1,0 +1,14 @@
+
+html elements used
+	inside div, class = "student card row"
+		inside p, class = "item"
+
+	div, class="row"
+		div class="semester-dropdown"
+	
+
+		ul class="dropdown-menu"
+
+
+need to implement semester dropdown
+need to implement class="btn" for Filter Results (look into this later)
