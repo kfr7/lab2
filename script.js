@@ -249,6 +249,8 @@ function updateReportCard(reportCardTableElement, currentSemester) {
   // call 2 functions 
   addTotalsRow(reportCardTableElement);
   addGpaRow(reportCardTableElement);
+  calculateSemesterGpa(reportCardTableElement);
+
 
 }
 
@@ -304,16 +306,24 @@ function addEventListeners(
   winterTermElement
 ) {
   // Add an event listener for the dropdown button that calls the openDropdown function with the correct DOM element
-  dropdownButtonElement.addEventListener('click', () => {openDropdown(dropdownElement)});
+  dropdownButtonElement.addEventListener('click', () => {modifyDropdownAndCallURC(dropdownElement, reportCardTableElement)});
   // Add 3 event listeners - one for the fall semester option, the spring semester option, and the winter term option
 
-  // fallSemesterElement.addEventListener('click', () => updateSemesterCallURCandCD("Fall Semester", reportCardTableElement, dropdownElement));
-  // springSemesterElement.addEventListener('click', () => updateSemesterCallURCandCD("Spring Semester", reportCardTableElement, dropdownElement));
-  // winterTermElement.addEventListener('click', () => updateSemesterCallURCandCD("Winter Term", reportCardTableElement, dropdownElement));
+  fallSemesterElement.addEventListener('click', () => updateSemesterCallURCandCD("Fall Semester", reportCardTableElement, dropdownElement));
+  springSemesterElement.addEventListener('click', () => updateSemesterCallURCandCD("Spring Semester", reportCardTableElement, dropdownElement));
+  winterTermElement.addEventListener('click', () => updateSemesterCallURCandCD("Winter Term", reportCardTableElement, dropdownElement));
 
 
   // Each callback function one should update the `semester` variable,
   // call the `updateReportCard` function, and close the dropdown
+}
+
+function modifyDropdownAndCallURC(
+  dropdownElement,
+  reportCardTableElement
+) {
+  openDropdown(dropdownElement);
+  updateReportCard(reportCardTableElement, semester);
 }
 
 function updateSemesterCallURCandCD(
@@ -369,11 +379,13 @@ function addUpStudentPoints(reportCardTableElement) {
 
 function calculateSemesterGpa(reportCardTableElement) {
   // code goes here
+  let gpaElement = reportCardTableElement.querySelector("#gpa");
+  gpaElement = "Point Sum Needed"
 }
 
 window.onload = function () {
   // execute your functions here to make sure they run as soon as the page loads
   populateStudentInfo(studentInformation);
   updateReportCard(reportCardTableDiv, semester);
-  addEventListeners(semesterDropdownDiv, semesterDropdownH2, reportCardTableDiv, fallSemesterSpan, springSemesterSpan, winterSemesterSpan)
+  addEventListeners(semesterDropdownDiv, semesterDropdownH2, reportCardTableDiv, fallSemesterSpan, springSemesterSpan, winterTermSpan)
 }
