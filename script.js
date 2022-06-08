@@ -267,12 +267,16 @@ function updateReportCard(reportCardTableElement, currentSemester) {
 function closeDropdown(dropdownElement) {
   // code goes here
   dropdownElement.classList.add("closed")
+  console.log("Was supposed to HIDE the dropdown");
 }
 
 function openDropdown(dropdownElement) {
   // code goes here
+  console.log("Entered to modify dropdown")
   if (dropdownElement.classList.contains("closed")) {
+    // THIS IS NOT WORKING!! NOT SHOWING THE MENU, MAYBE SOMETHING WRONG WITH ME UPDATING REPORT CARD AFTER? NOT SURE
     dropdownElement.classList.remove("closed");
+    console.log("Was supposed to SHOW the dropdown"); 
   }
   else {
     closeDropdown(dropdownElement);
@@ -313,6 +317,8 @@ function addEventListeners(
   springSemesterElement.addEventListener('click', () => updateSemesterCallURCandCD("Spring Semester", reportCardTableElement, dropdownElement));
   winterTermElement.addEventListener('click', () => updateSemesterCallURCandCD("Winter Term", reportCardTableElement, dropdownElement));
 
+  // DEBUGGING WITH THIS NEXT LINE
+  // document.querySelector('.btn').addEventListener("click", () => console.log("clicked"));
 
   // Each callback function one should update the `semester` variable,
   // call the `updateReportCard` function, and close the dropdown
@@ -322,8 +328,10 @@ function modifyDropdownAndCallURC(
   dropdownElement,
   reportCardTableElement
 ) {
+  console.log("Entered modify first", semester);
   openDropdown(dropdownElement);
-  updateReportCard(reportCardTableElement, semester);
+  // LINE below didn't make a difference if in the code or if commented out. Now I need help.
+  // updateReportCard(reportCardTableElement, semester);
 }
 
 function updateSemesterCallURCandCD(
@@ -331,6 +339,7 @@ function updateSemesterCallURCandCD(
   reportCardTableElement,
   dropdownElement
 ) {
+  console.log("Entered", newSemester);
   semester = newSemester;
   updateReportCard(reportCardTableElement, semester);
   closeDropdown(dropdownElement);
