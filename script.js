@@ -187,7 +187,7 @@ function addCourseRowToReportCard(reportCardTableElement, course, rowNum) {
     <h4 class="sem-col">${course.semester}</h4>
     <h4 class="cred-col"><span class="credit">${course.credits}</span> credits</h4>
     <h4 class="lett-col">${course.grade}</h4>
-    <h4 id="gpa-${rowNum+1}" class="pts-col">${gpaPointsLookup[course.grade]}</h4>
+    <h4 id="gpa-${rowNum + 1}" class="pts-col">${gpaPointsLookup[course.grade]}</h4>
   </div>
   `
 }
@@ -264,21 +264,30 @@ function updateReportCard(reportCardTableElement, currentSemester) {
  */
 function closeDropdown(dropdownElement) {
   // code goes here
+  dropdownElement.classList.add("closed")
 }
 
 function openDropdown(dropdownElement) {
   // code goes here
-  dropdownElement.classList.remove("closed")
-  console.log(dropdownElement.classList)
+  if (dropdownElement.classList.contains("closed")) {
+    dropdownElement.classList.remove("closed");
+  }
+  else {
+    closeDropdown(dropdownElement);
+  }
 }
 
 /**
  * This function should update the inner html of the dropdown label to be the current
  * value stored in the `semester` variable.
  *
+ * 
  */
+// I ADDED these 2 PARAMETERS
 function updateDropdownLabel() {
   // code goes here
+  semesterDropdownSpan.innerHTML = semester;
+  
 }
 
 /**
@@ -295,12 +304,26 @@ function addEventListeners(
   winterTermElement
 ) {
   // Add an event listener for the dropdown button that calls the openDropdown function with the correct DOM element
-  console.log("checking listener")
-  dropdownElement.addEventListener('mouseover', openDropdown);
+  dropdownButtonElement.addEventListener('click', () => {openDropdown(dropdownElement)});
   // Add 3 event listeners - one for the fall semester option, the spring semester option, and the winter term option
+
+  // fallSemesterElement.addEventListener('click', () => updateSemesterCallURCandCD("Fall Semester", reportCardTableElement, dropdownElement));
+  // springSemesterElement.addEventListener('click', () => updateSemesterCallURCandCD("Spring Semester", reportCardTableElement, dropdownElement));
+  // winterTermElement.addEventListener('click', () => updateSemesterCallURCandCD("Winter Term", reportCardTableElement, dropdownElement));
+
 
   // Each callback function one should update the `semester` variable,
   // call the `updateReportCard` function, and close the dropdown
+}
+
+function updateSemesterCallURCandCD(
+  newSemester,
+  reportCardTableElement,
+  dropdownElement
+) {
+  semester = newSemester;
+  updateReportCard(reportCardTableElement, semester);
+  closeDropdown(dropdownElement);
 }
 
 /***************
@@ -337,26 +360,11 @@ function addUpStudentCredits(reportCardTableElement) {
  */
 
 function addUpStudentPoints(reportCardTableElement) {
-  // let total = 0;
-  // let listOfLetters = reportCardTableElement.querySelectorAll(".pts-col");
-  // console.log(listOfLetters)
+  let total = 0;
+  // let listOfLetters = reportCardTableElement.querySelectorAll("#gpa- .pts-col");
   // listOfLetters.forEach(item => {total += parseInt(item.innerHTML)});
-  // return total;
-  let total = 0
-  let listOfCredits = reportCardTableElement.querySelectorAll(".pts-col");
-  for (const item in listOfCredits) {
-    if (typeof item == 'number')
-    {
-      console.log(typeof item, item)
-      total += parseInt(item)
-    }
-    else 
-    {
-      console.log(typeof item, item)
-    }
-  }
-  // listOfCredits.forEach(item => {total += parseInt(item.innerHTML)});
-  return total 
+  return total;
+
 }
 
 function calculateSemesterGpa(reportCardTableElement) {

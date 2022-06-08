@@ -12,3 +12,13 @@ html elements used
 
 need to implement semester dropdown
 need to implement class="btn" for Filter Results (look into this later)
+
+points part... amantina...
+rowNum + 1, "rowNum % 2 == 0"
+
+
+need to use gpa-row number and the class number?
+
+change naming schemes
+
+print debug with console.log
